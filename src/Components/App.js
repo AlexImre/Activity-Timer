@@ -2,26 +2,39 @@ import './App.css';
 import {NavBar} from './NavBar';
 import {Activity} from './Activity';
 import React, {useState} from 'react';
+import {generateId} from '../Utilities.js';
 
 function App() {
   
-  // THIS NEEDS TO HAPPEN IN NAV BAR AND THEN PASS TO APP
-  const getListofActivities = (activity) => {
-    // Save to state + use map to render in return Fn
-    return activity;
+  const [activity, setActivity] = useState({});  
+  const storeActivityText = (e) => {
+      setActivity({
+        text: e.target.value,
+        id: ''
+    });
   }
 
-  const ListOfActivities = getListofActivities()
-  
+  const [listOfActivities, setListOfActivities] = useState([]);
+  const handleSubmit_AddActivity = () => {
+    // Set activity ID onSubmit rather than onChange so values are unique --- IS THERE A BETTER WAY?
+    setActivity(activity.id = generateId());
+    setListOfActivities((prev) => [activity, ...prev]);
+    // Reset input field to display blank
+    setActivity('');
+    document.querySelector('input').value = '';
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <NavBar />
+        <NavBar
+          storeActivityText={storeActivityText}
+          handleSubmit_AddActivity={handleSubmit_AddActivity} />
         <div className="ActivityContainer">
-          {/* {!listOfActivities? "" : listOfActivities.map(
+          {!listOfActivities? "" : listOfActivities.map(
             (activities) => (
-            <Activity key={listOfActivities[0].id} listOfActivities={listOfActivities} text={listOfActivities[0].text} getActivities={getListofActivities} />
-            ))} */}
+            <Activity key={activities.id} text={activities.text} />
+            ))}
         </div>
       </header>
     </div>

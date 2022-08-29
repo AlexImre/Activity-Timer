@@ -22,3 +22,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.ActivityContainer {
+  border-radius: 50pc;
+}

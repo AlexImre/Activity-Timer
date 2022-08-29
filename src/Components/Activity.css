@@ -1,0 +1,32 @@
+.activityContainer {
+    background-color: aliceblue;
+    margin: 10px;
+    width: 25pc;
+    text-align: left;
+    justify-content: flex-start;
+    align-items: center;
+    color: #282c34;
+    border-radius: 15px;
+}
+
+.activityTextContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.activityText {
+    margin: 10px 20px 10px 20px;
+}
+
+.activityTheme {
+    margin: 10px 20px 10px 20px;
+    font-size: xx-large;
+    color: rgb(31, 223, 47);
+}
+
+.timer {
+    margin: 10px 20px 10px 20px;
+    text-align: center;
+    padding: 30px;
+}
