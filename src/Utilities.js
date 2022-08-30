@@ -1,6 +1,5 @@
-let nextId = 0;
+import {v4 as uuid} from 'uuid';
+
 export function generateId() {
-    const result = nextId;
-    nextId += 1;
-    return result;
+    return uuid();
   }

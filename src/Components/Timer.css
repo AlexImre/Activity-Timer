@@ -1,0 +1,34 @@
+.timeAndButtonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playButton {
+    background-color: aliceblue;
+    color: #282c34;
+    border: none;
+    max-width: 50px;
+    min-width: 50px;
+}
+
+.resetButton {
+    background-color: aliceblue;
+    color: #282c34;
+    border: none;
+    max-width: 50px;
+    min-width: 50px;
+}
+
+.addButton {
+    background-color: #282c34;
+    color:aliceblue;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    padding: 10px 15px 10px 10px;
+}
+
+.time {
+    font-size: larger;
+}

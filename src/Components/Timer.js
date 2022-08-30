@@ -1,52 +1,65 @@
 import React from 'react';
 import './Timer.css';
 import { useState, useEffect } from 'react';
+import useTimer from 'easytimer-react-hook';
 
 export function Timer(props) {
-    const [time, setTime] = useState(0);
-    const [running, setRunning] = useState(false);
+    // https://github.com/AlexImre/easytimer-react-hook
+    // DO I NEED TO PUT ALL TIMER LOGIC INSIDE ACTIVITY SO THAT IT FOLLOWS ACTIVITY??
+    const [timer, isTargetAchieved] = useTimer({});
 
-    useEffect(() => {
-        let interval;
-        if (running) {
-            interval = setInterval(() => {
-                setTime((prevTime) => prevTime + 10);
-            }, 10);
-        } else if (!running) {
-            clearInterval(interval);
+    const [display, setDisplay] = useState(<i class="fa-solid fa-play"></i>);
+    const handleClickStartAndPause = () => {
+        !timer.isRunning()? timer.start({}) : timer.pause({});
+        !timer.isRunning()? setDisplay(<i class="fa-solid fa-play"></i>) : setDisplay(<i class="fa-solid fa-pause"></i>);
         }
-        return () => clearInterval(interval);
-    }, [running]);
 
-    const getToday = () => {
-        const now = new Date()
-        const year = now.getFullYear()
-        let month = now.getMonth() + 1
-        month = month >= 10 ? month : '0' + month
-        let day = now.getDate()
-        day = day >= 10 ? day : '0' + day
-        const today = `${year}-${month}-${day}`
-        return today
-      }
+    const handleClickAdd = () => {
+        addToTimeBank();
+        timer.reset({});
+        timer.stop({});
+        setDisplay(<i class="fa-solid fa-play"></i>);
+    }
 
-      console.log(getToday());
-      console.log(Date.now());
+    const handleClickReset = () => {
+        timer.reset({});
+        timer.stop({});
+        setDisplay(<i class="fa-solid fa-play"></i>);
+    }
+
+    const [timeBank, setTimeBank] = useState(0);
+    const addToTimeBank = () => {
+        const timeToAdd = timer.getTimeValues();
+        const hoursElapsed = timeToAdd.hours;
+        const minsElapsed = timeToAdd.minutes;
+        const secondsElapsed = timeToAdd.seconds;
+        const timeElapsedInSeconds = (hoursElapsed * 60 * 60) + (minsElapsed * 60) + (secondsElapsed);
+        const timeElapsedInMilliSeconds = timeElapsedInSeconds * 1000;
+        setTimeBank((prev) => prev + timeElapsedInMilliSeconds);
+    };   
+
 
     return (
         <div>
-            <div className="TimerContainer">
-            </div>
-            <div className="stopwatch">
-                <div className="numbers">
-                    <span>{("0" + Math.floor((time / (1000 * 60 * 60)) % 60)).slice(-2)}:</span>
-                    <span>{("0" + Math.floor((time / (1000 * 60)) % 60)).slice(-2)}:</span>
-                    <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
+            <div className="timerContainer">
+                <div className="timeAndButtonsContainer">
+  
+                        <button className="playButton" onClick={handleClickStartAndPause}>{display}</button> 
+                    <div className="time"> 
+                        {timer.getTimeValues().toString()}
+                    </div>
+                    <div className="buttons">
+                        <button className ="resetButton" onClick={handleClickReset}><i class="fa-solid fa-arrow-rotate-left"></i></button>
+                    </div>
                 </div>
-                <div className="buttons">
-                    <button onClick={!running? () => setRunning(true) : () => setRunning(false)}>▶️</button>
-                    <button onClick={() => setTime(0)}>Reset</button>       
+                <div>
+                    <button className="addButton" onClick={handleClickAdd}><i class="fa-solid fa-plus"></i> Add time</button>
+                    <br></br>
+                    Total time: {new Date(timeBank).toISOString().slice(11, 19)}
                 </div>
             </div>
         </div>
     )
 }
+
+{/* <i class="fa-solid fa-pause"></i> */}
